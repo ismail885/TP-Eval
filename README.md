@@ -76,19 +76,32 @@ kubectl apply -f k8s/
 - Page web : http://<node-ip>:30080
 - Prometheus : http://<node-ip>:30090
 
-## Test de performance sur Jmeter
+## Test de performance : Locust
 
-Justification : JMeter permet de simuler facilement de la charge HTTP concurrente
-sur la gateway (50 utilisateurs virtuels), de mesurer le temps de réponse et le
-débit, et de générer un rapport synthétique sans écrire de code. C'est un outil
-standard vu en classe pour les tests de charge.
+Outil choisi : **Locust**. Il est écrit en Python, comme le reste du projet, ce
+qui rend le scénario de charge lisible et maintenable (`perf/locustfile.py`). Il
+simule de la charge HTTP concurrente sur la gateway, mesure temps de réponse et
+débit, et fournit une interface web temps réel ainsi qu'un rapport exportable.
 
-Le plan de test cible la gateway via `GET /`, ce qui déclenche à chaque requête
-un appel gRPC vers l'état courant : on teste donc l'ensemble de la chaîne
-gateway → gRPC → état.
+Le scénario cible la gateway via `GET /` (et quelques `POST /transition`), ce qui
+déclenche à chaque requête un appel gRPC vers l'état courant : on teste donc
+l'ensemble de la chaîne gateway → gRPC → état, et on fait grimper la métrique
+Prometheus `bacteria_state_traversals_total`.
 
-Lancer le test :
+Installer Locust :
 
 ```
-jmeter -n -t perf/bacteria-loadtest.jmx -Jhost=localhost -Jport=5000 -l perf/results.jtl
+pip install locust
+```
+
+Lancer avec l'interface web (puis ouvrir http://localhost:8089) :
+
+```
+locust -f perf/locustfile.py --host http://localhost:5000
+```
+
+Lancer sans interface (50 utilisateurs, montée en 10 s, durée 1 min, rapport HTML) :
+
+```
+locust -f perf/locustfile.py --host http://localhost:5000 --headless -u 50 -r 10 -t 1m --csv perf/results --html perf/report.html
 ```
