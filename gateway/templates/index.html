@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="5">
+  <title>Bactérie</title>
+</head>
+<body>
+  <h1>Bactérie</h1>
+  <p>État : <strong>{{ state }}</strong></p>
+  <p>Volume : <strong>{{ "%.4f"|format(volume) }}</strong> m³</p>
+
+  <h2>Transitions possibles</h2>
+  {% if reachable %}
+    {% for target in reachable %}
+      <form action="/transition" method="post" style="display:inline">
+        <input type="hidden" name="target" value="{{ target }}">
+        <button type="submit">{{ target }}</button>
+      </form>
+    {% endfor %}
+  {% else %}
+    <p>Aucune transition disponible (état terminal).</p>
+  {% endif %}
+</body>
+</html>

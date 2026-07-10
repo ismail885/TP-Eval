@@ -18,3 +18,32 @@ message TransitionResponse {
 service StateService {
   rpc Apply(Bacteria) returns (TransitionResponse);
 }
+
+message BacteriaState {
+  string id = 1;
+  double volume = 2;
+  string state = 3;
+  double last_change_ts = 4;
+}
+
+message SaveRequest {
+  BacteriaState bacteria = 1;
+}
+
+message SaveResponse {
+  bool ok = 1;
+}
+
+message LoadRequest {
+  string id = 1;
+}
+
+message LoadResponse {
+  bool found = 1;
+  BacteriaState bacteria = 2;
+}
+
+service PersistenceService {
+  rpc Save(SaveRequest) returns (SaveResponse);
+  rpc Load(LoadRequest) returns (LoadResponse);
+}
