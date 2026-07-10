@@ -1,3 +1,4 @@
+import os
 from concurrent import futures
 
 import grpc
@@ -7,8 +8,8 @@ import bacteria_pb2
 import bacteria_pb2_grpc
 
 STATE_NAME = "stable_impasse"
-GRPC_PORT = 50051
-METRICS_PORT = 8000
+GRPC_PORT = int(os.environ.get("GRPC_PORT", "50051"))
+METRICS_PORT = int(os.environ.get("METRICS_PORT", "8000"))
 
 traversals = Counter(
     "bacteria_state_traversals_total",

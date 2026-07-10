@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hypertrophie
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hypertrophie
+  template:
+    metadata:
+      labels:
+        app: hypertrophie
+    spec:
+      containers:
+        - name: hypertrophie
+          image: bacteria/hypertrophie:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 50051
+              name: grpc
+            - containerPort: 8000
+              name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hypertrophie
+spec:
+  selector:
+    app: hypertrophie
+  ports:
+    - name: grpc
+      port: 50051
+      targetPort: 50051
+    - name: metrics
+      port: 8000
+      targetPort: 8000

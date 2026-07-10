@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 5s
+    scrape_configs:
+      - job_name: bacteria-states
+        static_configs:
+          - targets:
+              - stable-vivant:8000
+              - hypertrophie:8000
+              - atrophie:8000
+              - stable-impasse:8000
+      - job_name: persistence
+        static_configs:
+          - targets:
+              - persistence:8000

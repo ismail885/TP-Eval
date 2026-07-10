@@ -1,3 +1,4 @@
+import os
 import time
 from concurrent import futures
 
@@ -10,8 +11,8 @@ import bacteria_pb2_grpc
 STATE_NAME = "hypertrophie"
 GROWTH_INTERVAL = 10.0
 GROWTH_FACTOR = 1.10
-GRPC_PORT = 50051
-METRICS_PORT = 8000
+GRPC_PORT = int(os.environ.get("GRPC_PORT", "50051"))
+METRICS_PORT = int(os.environ.get("METRICS_PORT", "8000"))
 
 traversals = Counter(
     "bacteria_state_traversals_total",

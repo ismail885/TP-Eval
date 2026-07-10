@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atrophie
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atrophie
+  template:
+    metadata:
+      labels:
+        app: atrophie
+    spec:
+      containers:
+        - name: atrophie
+          image: bacteria/atrophie:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 50051
+              name: grpc
+            - containerPort: 8000
+              name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: atrophie
+spec:
+  selector:
+    app: atrophie
+  ports:
+    - name: grpc
+      port: 50051
+      targetPort: 50051
+    - name: metrics
+      port: 8000
+      targetPort: 8000
