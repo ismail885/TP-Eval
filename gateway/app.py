@@ -12,10 +12,10 @@ app = Flask(__name__)
 BACTERIA_ID = "default"
 
 STATE_ADDRESSES = {
-    "stable_vivant": os.environ.get("STABLE_VIVANT_ADDR", "stable-vivant:50051"),
-    "hypertrophie": os.environ.get("HYPERTROPHIE_ADDR", "hypertrophie:50051"),
-    "atrophie": os.environ.get("ATROPHIE_ADDR", "atrophie:50051"),
-    "stable_impasse": os.environ.get("STABLE_IMPASSE_ADDR", "stable-impasse:50051"),
+    "stable_vivant": os.environ.get("STABLE_VIVANT_ADDR", "localhost:50051"),
+    "hypertrophie": os.environ.get("HYPERTROPHIE_ADDR", "localhost:50051"),
+    "atrophie": os.environ.get("ATROPHIE_ADDR", "localhost:50051"),
+    "stable_impasse": os.environ.get("STABLE_IMPASSE_ADDR", "localhost:50051"),
 }
 
 PERSISTENCE_ADDR = os.environ.get("PERSISTENCE_ADDR", "")

@@ -45,7 +45,8 @@ python states/atrophie/server.py
 python states/stable_impasse/server.py
 ```
 
-Lancer la gateway en pointant vers les états locaux :
+Lancer la gateway : elle pointe par défaut vers `localhost:50051` en mode local,
+et les adresses Kubernetes sont injectées par les manifests dans le cluster.
 
 ```
 python gateway/app.py
