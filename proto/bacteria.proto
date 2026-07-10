@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bacteria;
+
+message Bacteria {
+  double volume = 1;
+  string state = 2;
+  double last_change_ts = 3;
+}
+
+message TransitionResponse {
+  double volume = 1;
+  string state = 2;
+  double last_change_ts = 3;
+  repeated string reachable_states = 4;
+}
+
+service StateService {
+  rpc Apply(Bacteria) returns (TransitionResponse);
+}
