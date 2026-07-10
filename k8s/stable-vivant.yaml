@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stable-vivant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stable-vivant
+  template:
+    metadata:
+      labels:
+        app: stable-vivant
+    spec:
+      containers:
+        - name: stable-vivant
+          image: bacteria/stable-vivant:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 50051
+              name: grpc
+            - containerPort: 8000
+              name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stable-vivant
+spec:
+  selector:
+    app: stable-vivant
+  ports:
+    - name: grpc
+      port: 50051
+      targetPort: 50051
+    - name: metrics
+      port: 8000
+      targetPort: 8000
